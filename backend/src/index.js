@@ -5,9 +5,15 @@ const db = require('./db'); // Our pool helper
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const authRoutes = require('./routes/authRoutes');
+
+const bookingRoutes = require('./routes/bookingRoutes');
+
 // Middleware
 app.use(cors());
 app.use(express.json()); // Essential for parsing REST API JSON bodies
+app.use('/api/auth', authRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 // --- Health Check / Connection Test ---
 app.get('/api/health', async (req, res) => {
