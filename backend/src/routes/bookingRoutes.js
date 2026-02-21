@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { authenticateToken } = require('../middleware/auth');
+const { authenticateToken, isAdmin } = require('../middleware/auth');
 
-// This route is now protected.
-// Only users with a valid JWT can see "their" bookings.
+// Normal protected route
 router.get('/my-bookings', authenticateToken, (req, res) => {
-  // Because of the middleware, we have access to req.user.id here!
   res.json({ message: `Fetching bookings for user ${req.user.id}` });
+});
+
+// Admin-only route
+router.get('/admin-bookings', authenticateToken, isAdmin, (req, res) => {
+  res.json({ message: 'Fetching ALL bookings (admin access)' });
 });
 
 module.exports = router;
