@@ -9,11 +9,14 @@ const authRoutes = require('./routes/authRoutes');
 
 const bookingRoutes = require('./routes/bookingRoutes');
 
+const slotRoutes = require('./routes/slotRoutes');
+
 // Middleware
 app.use(cors());
 app.use(express.json()); // Essential for parsing REST API JSON bodies
-app.use('/api/auth', authRoutes);
-app.use('/api/bookings', bookingRoutes);
+app.use('/api', authRoutes);
+app.use('/api', bookingRoutes);
+app.use('/api/slots', slotRoutes);
 
 // --- Health Check / Connection Test ---
 app.get('/api/health', async (req, res) => {
@@ -30,6 +33,9 @@ app.get('/api/health', async (req, res) => {
     res.status(500).json({ status: 'error', message: 'DB connection failed.' });
   }
 });
+
+// Trust reverse proxy (e.g. Nginx)
+app.set('trust proxy', 1);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

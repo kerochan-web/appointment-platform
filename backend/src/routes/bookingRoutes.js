@@ -1,15 +1,22 @@
 const express = require('express');
 const router = express.Router();
+const bookingController = require('../controllers/bookingController');
 const { authenticateToken, isAdmin } = require('../middleware/auth');
 
-// Normal protected route
-router.get('/my-bookings', authenticateToken, (req, res) => {
-  res.json({ message: `Fetching bookings for user ${req.user.id}` });
-});
+// --- User Endpoints ---
 
-// Admin-only route
-router.get('/admin-bookings', authenticateToken, isAdmin, (req, res) => {
-  res.json({ message: 'Fetching ALL bookings (admin access)' });
-});
+// GET /api/my-bookings
+router.get('/my-bookings', authenticateToken, bookingController.getUserBookings);
+
+// POST /api/bookings
+router.post('/bookings', authenticateToken, bookingController.bookSlot);
+
+// DELETE /api/bookings/:id (Handled by a shared controller that checks ownership or admin)
+router.delete('/bookings/:id', authenticateToken, bookingController.deleteBooking);
+
+// --- Admin Endpoints ---
+
+// GET /api/bookings (Admin sees everything)
+router.get('/bookings', authenticateToken, isAdmin, bookingController.getAllBookings);
 
 module.exports = router;
