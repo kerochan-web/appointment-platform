@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Login from './pages/Login';
 
 const Landing = () => {
   const [health, setHealth] = useState({ status: 'loading', message: 'Connecting to backend...' });
@@ -40,17 +41,34 @@ const UserDashboard = () => <div className="p-8"><h2>Your Bookings</h2></div>;
 const AdminPanel = () => <div className="p-8 font-mono"><h2>Admin Terminal</h2></div>;
 
 function App() {
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userRole');
+    window.location.href = '/'; // Hard redirect to reset state
+  };
+
+  const isLoggedIn = !!localStorage.getItem('token');
+
   return (
     <Router>
       <nav className="p-4 bg-slate-100 flex gap-4 border-b">
         <Link tag="Home" to="/">Home</Link>
         <Link to="/dashboard">My Bookings</Link>
         <Link to="/admin" className="ml-auto text-red-600">Admin</Link>
+        <div className="ml-auto flex gap-4 items-center">
+          {isLoggedIn ? (
+            <button onClick={handleLogout} className="text-sm text-slate-600">Logout</button>
+          ) : (
+            <Link to="/login" className="text-sm text-blue-600 font-medium">Login</Link>
+          )}
+        </div>
       </nav>
 
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<UserDashboard />} />
+        {/* We'll protect this route next */}
         <Route path="/admin" element={<AdminPanel />} />
       </Routes>
     </Router>
