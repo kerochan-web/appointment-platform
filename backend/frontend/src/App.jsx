@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Login from './pages/Login';
 import Slots from './pages/Slots';
 import Dashboard from './pages/Dashboard';
+import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const Landing = () => {
@@ -39,8 +40,6 @@ const Landing = () => {
     </div>
   );
 };
-
-const AdminPanel = () => <div className="p-8 font-mono"><h2>Admin Terminal</h2></div>;
 
 function App() {
   const handleLogout = () => {
@@ -85,7 +84,7 @@ function App() {
           path="/admin" 
           element={
             <ProtectedRoute adminOnly={true}>
-              <AdminPanel />
+              <AdminDashboard />
             </ProtectedRoute>
           } 
         />
