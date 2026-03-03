@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Login from './pages/Login';
+import Slots from './pages/Slots';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const Landing = () => {
   const [health, setHealth] = useState({ status: 'loading', message: 'Connecting to backend...' });
@@ -67,9 +69,26 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<UserDashboard />} />
-        {/* We'll protect this route next */}
-        <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/bookings" element={<Slots />} />
+        {/* Protected User Route */}
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectedRoute>
+              <UserDashboard />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* Protected Admin Route */}
+        <Route 
+          path="/admin" 
+          element={
+            <ProtectedRoute adminOnly={true}>
+              <AdminPanel />
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
     </Router>
   );
