@@ -1,18 +1,19 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
-const Login = ({ setToken }) => {
+const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -21,17 +22,12 @@ const Login = ({ setToken }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+        throw new Error(data.message || 'Registration failed');
       }
 
-      // The "Magic" bit: save token to localStorage
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userRole', data.user.role); // Useful for admin routing
-
-      // Update Parent State
-      setToken(data.token);
-
-      navigate('/dashboard');
+      setSuccess(true);
+      // Wait 2 seconds so they can see the success message, then redirect
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
       setError(err.message);
     }
@@ -40,12 +36,13 @@ const Login = ({ setToken }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh]">
       <form 
-        onSubmit={handleLogin} 
+        onSubmit={handleRegister} 
         className="bg-white p-8 border border-slate-200 rounded-lg shadow-sm w-full max-w-md"
       >
-        <h2 className="text-2xl font-bold mb-6 text-slate-800">Sign In</h2>
+        <h2 className="text-2xl font-bold mb-6 text-slate-800">Create Account</h2>
         
         {error && <p className="mb-4 text-sm text-red-600 font-medium">{error}</p>}
+        {success && <p className="mb-4 text-sm text-green-600 font-medium">Account created! Redirecting to login...</p>}
 
         <div className="mb-4">
           <label className="block text-sm font-medium text-slate-700">Email</label>
@@ -71,13 +68,17 @@ const Login = ({ setToken }) => {
 
         <button
           type="submit"
-          className="w-full bg-slate-900 text-white py-2 rounded-md hover:bg-slate-800 transition-colors"
+          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
         >
-          Enter
+          Register
         </button>
+
+        <p className="mt-4 text-center text-sm text-slate-600">
+          Already have an account? <Link to="/login" className="text-blue-600 hover:underline">Sign in</Link>
+        </p>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default Register;
