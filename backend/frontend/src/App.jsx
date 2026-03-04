@@ -23,15 +23,10 @@ const Landing = () => {
 
   return (
     <div className="p-8">
-      <h1 className="text-4xl font-bold text-slate-800">Welcome to the App</h1>
-      <div className={`mt-4 p-4 rounded border ${health.status === 'active' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-        <p className="text-sm font-mono">
-          <strong>System Status:</strong> {health.message}
-        </p>
-        {health.time && <p className="text-xs text-slate-500 mt-1">Server Time: {health.time}</p>}
-      </div>
+      <h1 className="text-4xl font-bold text-slate-800">Book Your Appointment in Seconds</h1>
+      <h2 className="text-3xl text-slate-800"> Choose a time slot and manage your bookings easily.</h2>
       <Link to="/bookings" className="mt-6 inline-block bg-blue-600 text-white px-4 py-2 rounded">
-        View Slots
+        View Available Slots
       </Link>
     </div>
   );

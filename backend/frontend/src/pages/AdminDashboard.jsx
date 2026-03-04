@@ -9,10 +9,6 @@ const AdminDashboard = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem('token');
 
-  useEffect(() => {
-    fetchBookings();
-  }, []);
-
   const fetchBookings = async () => {
     try {
       const res = await fetch(`${apiUrl}/bookings`, {
@@ -24,6 +20,13 @@ const AdminDashboard = () => {
       console.error("Failed to fetch bookings", err);
     }
   };
+
+  // Live Sync: Admin sees new bookings without refreshing
+  useEffect(() => {
+    fetchBookings();
+    const interval = setInterval(fetchBookings, 5000); 
+    return () => clearInterval(interval);
+  }, [apiUrl, token]);
 
   const handleCreateSlot = async (e) => {
     e.preventDefault();

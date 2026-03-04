@@ -1,27 +1,51 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Slots = () => {
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
-
+  
+  const navigate = useNavigate();
+  const location = useLocation();
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem('token');
 
+  // Handle URL errors (e.g., if auto-booking failed during login)
   useEffect(() => {
-    fetch(`${apiUrl}/slots`)
-      .then((res) => res.json())
-      .then((data) => {
-        setSlots(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error('Fetch error:', err);
-        setLoading(false);
-      });
+    const params = new URLSearchParams(location.search);
+    if (params.get('error') === 'already_booked') {
+      setMessage('Sorry! That slot was taken while you were logging in.');
+    }
+  }, [location]);
+
+  // 1. Fetching logic encapsulated for reuse
+  const fetchSlots = async () => {
+    try {
+      const res = await fetch(`${apiUrl}/slots`);
+      const data = await res.json();
+      setSlots(data);
+      setLoading(false);
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setLoading(false);
+    }
+  };
+
+  // 2. "Optimistic" Sync: Poll every 5 seconds to catch bookings from other users
+  useEffect(() => {
+    fetchSlots(); // Initial fetch
+    const interval = setInterval(fetchSlots, 5000); 
+    return () => clearInterval(interval); // Cleanup on unmount
   }, [apiUrl]);
 
   const handleBook = async (slotId) => {
+    // 3. Auth Check & Redirect Logic
+    if (!token) {
+      navigate(`/login?redirectTo=/dashboard&slotId=${slotId}`);
+      return;
+    }
+
     setMessage('');
     try {
       const response = await fetch(`${apiUrl}/bookings`, {
@@ -37,14 +61,26 @@ const Slots = () => {
 
       if (response.ok) {
         setMessage('Booking successful!');
-        // Remove the booked slot from the UI or refresh list
-        setSlots(slots.filter(slot => slot.id !== slotId));
+        // Optimistic UI: Remove it immediately before the next poll
+        setSlots(prev => prev.filter(slot => slot.id !== slotId));
       } else {
         setMessage(data.message || 'Booking failed.');
       }
     } catch (err) {
       setMessage('Error connecting to server.');
     }
+  };
+
+  // 4. Dynamic Duration Helper
+  const getDuration = (start, end) => {
+    const diffInMs = new Date(end) - new Date(start);
+    const diffInMins = Math.round(diffInMs / 60000);
+    if (diffInMins >= 60) {
+      const hours = Math.floor(diffInMins / 60);
+      const mins = diffInMins % 60;
+      return `${hours}h ${mins > 0 ? mins + 'm' : ''}`;
+    }
+    return `${diffInMins} mins`;
   };
 
   if (loading) return <div className="p-8">Loading available time slots...</div>;
@@ -64,16 +100,18 @@ const Slots = () => {
           <p className="text-slate-500">No slots available right now. Check back later.</p>
         ) : (
           slots.map((slot) => (
-            <div key={slot.id} className="flex items-center justify-between p-4 border border-slate-200 rounded-lg bg-white shadow-sm">
+            <div key={slot.id} className="flex items-center justify-between p-4 border border-slate-200 rounded-lg bg-white shadow-sm hover:border-blue-300 transition-all">
               <div>
                 <p className="font-medium text-slate-700">
-                  {new Date(slot.start_time).toLocaleString()}
+                  {new Date(slot.start_time).toLocaleDateString()} at {new Date(slot.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </p>
-                <p className="text-xs text-slate-500">Duration: 1 hour</p>
+                <p className="text-xs text-slate-500">
+                  Duration: {getDuration(slot.start_time, slot.end_time)}
+                </p>
               </div>
               <button
                 onClick={() => handleBook(slot.id)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors text-sm"
+                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors text-sm font-semibold"
               >
                 Book Now
               </button>
