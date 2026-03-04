@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const Login = ({ setToken }) => {
+const Login = ({ setToken, setUserEmail }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -35,7 +35,9 @@ const Login = ({ setToken }) => {
       // 1. Save credentials
       localStorage.setItem('token', data.token);
       localStorage.setItem('userRole', data.user.role);
+      localStorage.setItem('userEmail', data.user.email);
       setToken(data.token);
+      setUserEmail(data.user.email);
 
       // --- INTERRUPTED BOOKING LOGIC ---
       if (slotId) {

@@ -35,11 +35,14 @@ const Landing = () => {
 function App() {
   // Lift auth status into state so React tracks it
   const [token, setToken] = useState(localStorage.getItem('token'));
+  const [userEmail, setUserEmail] = useState(localStorage.getItem('userEmail'));
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
+    localStorage.removeItem('userEmail');
     setToken(null); // Triggers re-render
+    setUserEmail(null);
     window.location.href = '/'; 
   };
 
@@ -55,6 +58,13 @@ function App() {
         <div className="ml-auto flex gap-4 items-center">
           {token ? (
             <>
+              {/* Display the email here */}
+              {userEmail && (
+                <span className="text-sm font-medium text-slate-600 border-r pr-4 border-slate-300">
+                  {userEmail}
+                </span>
+              )}
+
               {/* Only show Admin link if role matches */}
               {localStorage.getItem('userRole') === 'admin' && (
                 <Link to="/admin" className="text-red-600 font-medium">Admin</Link>
@@ -77,7 +87,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         {/* Pass setToken to Login so it can update the App state */}
-        <Route path="/login" element={<Login setToken={setToken} />} />
+        <Route path="/login" element={<Login setToken={setToken} setUserEmail={setUserEmail} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/bookings" element={<Slots />} />
         

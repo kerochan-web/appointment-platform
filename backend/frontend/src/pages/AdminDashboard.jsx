@@ -117,7 +117,9 @@ const AdminDashboard = () => {
               <div key={b.id} className="p-4 border rounded-lg flex justify-between items-center bg-white shadow-sm">
                 <div>
                   <p className="text-sm font-bold text-slate-700">{b.user_email || `User #${b.user_id}`}</p>
-                  <p className="text-xs text-slate-500">{new Date(b.start_time).toLocaleString()}</p>
+                  <p className="text-xs text-slate-500">Start time: {new Date(b.start_time).toLocaleString()}</p>
+                  <p className="text-xs text-slate-500">End time: {new Date(b.end_time).toLocaleString()}</p>
+                  <p className="text-xs text-slate-500">Booking ID: {b.id}</p>
                 </div>
                 <button 
                   onClick={() => cancelBooking(b.id)}
