@@ -76,7 +76,7 @@ const Dashboard = () => {
               </div>
               <button
                 onClick={() => handleCancel(b.id)}
-                className="text-sm text-red-600 hover:underline font-medium"
+                className="text-xs bg-red-50 text-red-600 px-3 py-1 rounded border border-red-100 hover:bg-red-100"
               >
                 Cancel
               </button>
