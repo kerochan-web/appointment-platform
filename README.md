@@ -11,7 +11,7 @@ A realistic, defensible, and high-performance **PERN stack** appointment booking
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 * **Frontend**: React (Vite), Tailwind CSS, React Router SPA.
 * **Backend**: Node.js & Express REST API.
