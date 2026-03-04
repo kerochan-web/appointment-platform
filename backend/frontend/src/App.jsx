@@ -9,6 +9,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const Landing = () => {
+  useTitle('Home');
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center">
       <h1 className="text-5xl font-extrabold text-slate-900 tracking-tight">
@@ -28,8 +29,6 @@ function App() {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [userEmail, setUserEmail] = useState(localStorage.getItem('userEmail'));
   const [isMenuOpen, setIsMenuOpen] = useState(false); // Mobile menu state
-
-  useTitle('Home');
 
   const handleLogout = () => {
     localStorage.clear();
