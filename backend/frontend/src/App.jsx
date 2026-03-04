@@ -1,3 +1,4 @@
+import useTitle from './hooks/useTitle';
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Login from './pages/Login';
@@ -9,6 +10,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 const Landing = () => {
   const [health, setHealth] = useState({ status: 'loading', message: 'Connecting to backend...' });
+
+  useTitle('Home');
 
   useEffect(() => {
     const apiUrl = import.meta.env.VITE_API_URL;

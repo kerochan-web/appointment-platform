@@ -1,3 +1,4 @@
+import useTitle from '../hooks/useTitle';
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
@@ -7,6 +8,8 @@ const Register = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
+
+  useTitle('Register');
 
   const handleRegister = async (e) => {
     e.preventDefault();

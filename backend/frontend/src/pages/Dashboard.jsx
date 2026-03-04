@@ -1,3 +1,4 @@
+import useTitle from '../hooks/useTitle';
 import { useState, useEffect } from 'react';
 
 const Dashboard = () => {
@@ -7,6 +8,8 @@ const Dashboard = () => {
 
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem('token');
+
+  useTitle('My Bookings');
 
   useEffect(() => {
     fetchBookings();

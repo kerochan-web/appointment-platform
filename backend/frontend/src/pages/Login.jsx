@@ -1,3 +1,4 @@
+import useTitle from '../hooks/useTitle';
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -13,6 +14,8 @@ const Login = ({ setToken, setUserEmail }) => {
   const queryParams = new URLSearchParams(location.search);
   const redirectTo = queryParams.get('redirectTo');
   const slotId = queryParams.get('slotId');
+
+  useTitle('Sign In');
 
   const handleLogin = async (e) => {
     e.preventDefault();

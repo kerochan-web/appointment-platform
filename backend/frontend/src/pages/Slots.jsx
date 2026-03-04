@@ -1,3 +1,4 @@
+import useTitle from '../hooks/useTitle';
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -10,6 +11,8 @@ const Slots = () => {
   const location = useLocation();
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem('token');
+
+  useTitle('Availabable Slots');
 
   // Handle URL errors (e.g., if auto-booking failed during login)
   useEffect(() => {
@@ -87,7 +90,7 @@ const Slots = () => {
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6 text-slate-800">Available Appointments</h2>
+      <h2 className="text-2xl font-bold mb-6 text-slate-800">Available Slots</h2>
       
       {message && (
         <div className={`mb-4 p-3 rounded ${message.includes('successful') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>

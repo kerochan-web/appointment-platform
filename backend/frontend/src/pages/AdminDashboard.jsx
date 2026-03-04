@@ -1,3 +1,4 @@
+import useTitle from '../hooks/useTitle';
 import { useState, useEffect } from 'react';
 
 const AdminDashboard = () => {
@@ -8,6 +9,8 @@ const AdminDashboard = () => {
 
   const apiUrl = import.meta.env.VITE_API_URL;
   const token = localStorage.getItem('token');
+
+  useTitle('Admin Dashboard');
 
   // Live Sync: Admin sees new bookings without refreshing
   useEffect(() => {
