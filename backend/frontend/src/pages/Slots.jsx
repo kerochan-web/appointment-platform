@@ -103,7 +103,10 @@ const Slots = () => {
             <div key={slot.id} className="flex items-center justify-between p-4 border border-slate-200 rounded-lg bg-white shadow-sm hover:border-blue-300 transition-all">
               <div>
                 <p className="font-medium text-slate-700">
-                  {new Date(slot.start_time).toLocaleDateString()} at {new Date(slot.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  Start time: {new Date(slot.start_time).toLocaleDateString()} at {new Date(slot.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </p>
+                <p className="font-medium text-slate-700">
+                  End time: {new Date(slot.end_time).toLocaleDateString()} at {new Date(slot.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </p>
                 <p className="text-xs text-slate-500">
                   Duration: {getDuration(slot.start_time, slot.end_time)}

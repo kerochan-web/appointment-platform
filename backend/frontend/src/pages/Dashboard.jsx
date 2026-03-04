@@ -67,12 +67,12 @@ const Dashboard = () => {
               <div>
                 {/* Formatting date for readability */}
                 <p className="font-semibold text-slate-700">
-                  {new Date(b.start_time).toLocaleString()}
+                  Start time: {new Date(b.start_time).toLocaleString()}
+                </p>
+                <p className="font-semibold text-slate-700">
+                  End time: {new Date(b.end_time).toLocaleString()}
                 </p>
                 <p className="text-xs text-slate-400">Booking ID: {b.id}</p>
-                <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded ${b.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'}`}>
-                  {b.status}
-                </span>
               </div>
               <button
                 onClick={() => handleCancel(b.id)}

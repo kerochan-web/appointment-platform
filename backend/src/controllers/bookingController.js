@@ -101,9 +101,10 @@ exports.deleteBooking = async (req, res) => {
 exports.getAllBookings = async (req, res) => {
   try {
     const result = await db.query(
-      `SELECT b.id, b.user_id, b.created_at, t.start_time, t.end_time 
+      `SELECT b.id, b.user_id, u.email AS user_email, b.created_at, t.start_time, t.end_time 
        FROM bookings b
        JOIN time_slots t ON b.time_slot_id = t.id
+       JOIN users u      ON b.user_id = u.id
        ORDER BY t.start_time ASC`
     );
     
