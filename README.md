@@ -69,7 +69,8 @@ This is important because even if the frontend or backend logic fails to catch a
 ```bash
 git clone https://github.com/kerochan-web/appointment-platform.git
 cd appointment-platform
-npm install
+npm run install-all
+npm run dev
 ```
 
 ### 2. Environment Setup
