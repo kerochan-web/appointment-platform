@@ -5,7 +5,10 @@
     "backend"
   ],
   "scripts": {
-    "install-all": "npm install", 
+    "install-all": "npm install --legacy-peer-deps ; npm install concurrently --save-dev",
     "dev": "concurrently \"npm run dev -w frontend\" \"npm run dev -w backend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }
