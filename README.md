@@ -1,6 +1,10 @@
 # appointment-platform
 A realistic, defensible, and high-performance **PERN stack** appointment booking platform. This project focuses on a clean monolith architecture and robust database constraints.
 
+[Deployed app link](https://pern.kerochan.lol)
+
+[Demo video](https://files.catbox.moe/8ucz4e.webm)
+
 ---
 
 ## Philosophy
